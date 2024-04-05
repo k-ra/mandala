@@ -1,8 +1,8 @@
 <script lang="ts">
     import { onMount } from "svelte";
 
-    let width = 600;
-    let height = 300;
+    let width = 800;
+    let height = 400;
     export let color = "#333";
     export let background = "#fff";
 
@@ -75,7 +75,6 @@
 <svelte:window on:resize={handleSize} />
 <div>
     <button on:click={clear} class="clear"> clear </button>
-    <button on:click={save}> save </button>
 </div>
 <div>
     <canvas
@@ -104,7 +103,7 @@
         }}
     />
 </div>
-{coords}
+<button on:click={save}> save </button>
 
 <style>
     canvas {
