@@ -3,10 +3,14 @@
 </script>
 
 <body>
-    <h1>start</h1>
-    <Canvas />
-    <h1>end</h1>
-    <br />
+    <div class="center">
+        <h1>M A N D A L A</h1>
+        
+    </div>
+    <div class="canvaswrap">
+        <Canvas />
+    </div>
+    <h2 class="center"><i>draw your starter line</i></h2>
 </body>
 
 <style>
@@ -14,15 +18,28 @@
     h1 {
         font-family: "Spectral", serif;
         color: white;
+        font-size: 50pt;
     }
+
     body {
+        /* background-image: url(mandala.png); */
+        /* background-repeat: no-repeat; */
+        /* background-position: center; */
+        /* background-size: 300% 100%; */
         margin: 0;
         padding: 0;
         min-height: 100vh;
+        background: rgb(70, 70, 70);
+    }
+    .center {
+        text-align: center;
+        color: white;
+        padding: 2%;
+    }
+    .canvaswrap {
         display: flex;
         justify-content: center;
         align-items: center;
-        background: black;
     }
     * {
         font-family: "Spectral", serif;
