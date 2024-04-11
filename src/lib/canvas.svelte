@@ -1,4 +1,20 @@
 <script lang="ts">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "firebase/app";
+    import { getDatabase, ref, set } from "firebase/database";
+    const firebaseConfig = {
+        apiKey: "AIzaSyClAN9gW5A_catXwLyFIf-IIedp-zue70o",
+        authDomain: "mandala-2dfea.firebaseapp.com",
+        databaseURL: "https://mandala-2dfea-default-rtdb.firebaseio.com",
+        projectId: "mandala-2dfea",
+        storageBucket: "mandala-2dfea.appspot.com",
+        messagingSenderId: "693026432935",
+        appId: "1:693026432935:web:31c8a5d9b0c6196a117882",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
     import { onMount } from "svelte";
 
     let width = 1000;
@@ -10,7 +26,7 @@
     let start;
     let coords = [];
     let drawnyet = false;
-
+    let message = "";
     let t, l;
 
     onMount(() => {
@@ -24,10 +40,13 @@
             isDrawing = true;
             drawnyet = true;
             start = { x, y };
+            message = "";
         }
     };
 
-    const handleEnd = () => { isDrawing = false };
+    const handleEnd = () => {
+        isDrawing = false;
+    };
 
     const handleMove = ({ offsetX: x1, offsetY: y1 }) => {
         if (!isDrawing) return;
@@ -52,33 +71,26 @@
         drawnyet = false;
     };
 
-    //this is the function where we can convert things
     const save = () => {
-        // Convert coords array to CSV string
-        let csvContent = "data:text/csv;charset=utf-8,";
-        csvContent += "X,Y\n"; // Column headers
-        coords.forEach((coord) => {
-            csvContent += `${coord.x},${coord.y}\n`;
-        });
-
-        // Create a link and trigger download
-        const encodedUri = encodeURI(csvContent);
-        const link = document.createElement("a");
-        link.setAttribute("href", encodedUri);
-        link.setAttribute("download", "coords.csv");
-        document.body.appendChild(link); // Required for Firefox
-
-        link.click(); // This will download the file
-        document.body.removeChild(link); // Clean up
+        const coordsRef = ref(database, "COORDS"); // Reference to a node where you want to store the coordinates
+        set(coordsRef, coords)
+            .then(() => {
+                console.log("Coordinates saved successfully!");
+                message = "sent!";
+                clear();
+            })
+            .catch((error) => {
+                console.error("Error saving coordinates: ", error);
+                message = "Error!!";
+            });
     };
 </script>
 
 <svelte:window on:resize={handleSize} />
 
-<div>
+<div class="canvaswrap">
     <button on:click={clear} class="clear"> redo </button>
-</div>
-<div>
+
     <canvas
         {width}
         {height}
@@ -102,18 +114,23 @@
             });
         }}
     />
+    <button on:click={save}> save </button>
 </div>
-<button on:click={save}> save </button>
+<h2>{message}</h2>
 
 <style>
     canvas {
         border-radius: 15px;
         background: #fff;
     }
+    h2 {
+        text-align: center;
+        color: #ffb6c1;
+    }
     button {
         border-radius: 10px;
         font-size: 20pt;
-        background-color:rgb(70, 70, 70);
+        background-color: rgb(70, 70, 70);
         border: none;
         color: rgb(76, 235, 76);
         padding: 15px 32px;
@@ -124,5 +141,10 @@
     }
     .clear {
         color: rgb(255, 79, 79);
+    }
+    .canvaswrap {
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 </style>

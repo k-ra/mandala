@@ -1,15 +1,14 @@
 <script lang="ts">
     import Canvas from "$lib/canvas.svelte";
+    import message from "$lib/canvas.svelte";
 </script>
 
 <body>
     <div class="center">
         <h1>M A N D A L A</h1>
-        
     </div>
-    <div class="canvaswrap">
-        <Canvas />
-    </div>
+
+    <Canvas />
     <h2 class="center"><i>draw your starter line</i></h2>
 </body>
 
@@ -22,10 +21,10 @@
     }
 
     body {
-        /* background-image: url(mandala.png); */
-        /* background-repeat: no-repeat; */
-        /* background-position: center; */
-        /* background-size: 300% 100%; */
+        background-image: url(mandala.png);
+        background-repeat: repeat;
+        background-position: center;
+        background-size: 300% 100%;
         margin: 0;
         padding: 0;
         min-height: 100vh;
